@@ -1,0 +1,19 @@
+package com.microservices.Blog_App_2.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name = "posts")
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(nullable = false)
+    private String title;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private String content;
+}
