@@ -1,5 +1,6 @@
 package com.microservices.Blog_App_2.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microservices.Blog_App_2.dto.PostDTO;
 import com.microservices.Blog_App_2.entity.Post;
 import com.microservices.Blog_App_2.mapper.PostMapper.DTOToEntity;
@@ -11,11 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -37,5 +36,28 @@ public class PostController {
             throw new RuntimeException("REQUEST BODY EMPTY");
         Post savedPost = postService.createPost(dtoToEntity.postDTOToEntity(post.get()));
         return new ResponseEntity<>(entityToDTO.postEntityToDTO(savedPost), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllPosts")
+    public ResponseEntity<List<PostDTO>> getAllPost() {
+        List<Post> allPosts = postService.getAllPost();
+        var postDTOList = allPosts.stream()
+                .map(p -> {
+                    return entityToDTO.postEntityToDTO(p);
+                }).toList();
+        return new ResponseEntity<>(postDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<PostDTO> getPostById(@RequestParam Long id) {
+        Post post = postService.getPostById(id);
+        PostDTO postDTO = entityToDTO.postEntityToDTO(post);
+        return new ResponseEntity<>(postDTO, HttpStatus.FOUND);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deletePostById(@RequestParam Long id) throws JsonProcessingException {
+        String response = postService.deletePostById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
