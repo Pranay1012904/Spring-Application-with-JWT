@@ -2,18 +2,14 @@ package com.microservices.Blog_App_2.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microservices.Blog_App_2.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.microservices.Blog_App_2.dto.PostResponse;
 
 
 public interface PostService {
 
     Post createPost(Post post);
 
-    List<Post> getAllPost();
+    PostResponse getAllPost(int pageNo, int pageSize);
 
     Post getPostById(Long id);
 

@@ -1,7 +1,7 @@
 package com.microservices.Blog_App_2.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.microservices.Blog_App_2.dto.PostDTO;
+import com.microservices.Blog_App_2.dto.*;
 import com.microservices.Blog_App_2.entity.Post;
 import com.microservices.Blog_App_2.mapper.PostMapper.DTOToEntity;
 import com.microservices.Blog_App_2.mapper.PostMapper.EntityToDTO;
@@ -39,13 +39,13 @@ public class PostController {
     }
 
     @GetMapping("/getAllPosts")
-    public ResponseEntity<List<PostDTO>> getAllPost() {
-        List<Post> allPosts = postService.getAllPost();
-        var postDTOList = allPosts.stream()
-                .map(p -> {
-                    return entityToDTO.postEntityToDTO(p);
-                }).toList();
-        return new ResponseEntity<>(postDTOList, HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPost(
+            @RequestParam(value = "pageNO", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize
+    ) {
+        PostResponse response = postService.getAllPost(pageNo, pageSize);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/getById")
