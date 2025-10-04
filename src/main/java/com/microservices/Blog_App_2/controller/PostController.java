@@ -1,6 +1,7 @@
 package com.microservices.Blog_App_2.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.microservices.Blog_App_2.config.NamedConstants;
 import com.microservices.Blog_App_2.dto.*;
 import com.microservices.Blog_App_2.entity.Post;
 import com.microservices.Blog_App_2.mapper.PostMapper.DTOToEntity;
@@ -40,8 +41,8 @@ public class PostController {
 
     @GetMapping("/getAllPosts")
     public ResponseEntity<PostResponse> getAllPost(
-            @RequestParam(value = "pageNO", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize
+            @RequestParam(value = NamedConstants.DEFAULT_PAGE_NO, defaultValue = NamedConstants.DEFAULT_PAGE_VALUE, required = false) int pageNo,
+            @RequestParam(value = NamedConstants.DEFAULT_PAGE_SIZE_VALUE, defaultValue = NamedConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
     ) {
         PostResponse response = postService.getAllPost(pageNo, pageSize);
 
